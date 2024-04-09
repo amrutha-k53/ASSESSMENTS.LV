@@ -1,0 +1,19 @@
+1. CustomerID=205
+2. CustomerID=201,205
+3. CustomerID=206,messagecount=150,datausage=1gb
+
+4.ProducttypeID=1,
+total_sales_for_products=17240000
+
+5.ProducttypeID=2,
+total_sales_for_products=8750000
+
+6.ProducttypeID=1,
+avg_sales_for_products=9240000.0000
+
+7.
+8.
+9.
+10.PolicyID=301,303,305
+11.1900
+12.
