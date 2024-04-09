@@ -1,19 +1,36 @@
-1. CustomerID=205
-2. CustomerID=201,205
-3. CustomerID=206,messagecount=150,datausage=1gb
+1.
+2.
+3.SELECT CustomerID,MessageCount,DataUsed 
+FROM CustomerInteractions 
+ORDER BY MessageCount DESC,DataUsed ASC;
 
-4.ProducttypeID=1,
-total_sales_for_products=17240000
+4.select ProductTypeID,SUM(TotalSalesAmount*UnitsSold) as total_sales_for_products 
+    from quarterlysales 
+    where ProductTypeID='1';
+    
+5.select ProductTypeID, TotalSalesAmount*UnitsSold as total_sales_for_products 
+    from quarterlysales 
+    where Quarter='Q1'AND Year='2024'
+    order by total_sales_for_products DESC limit 1;
+    
+6.select ProductTypeID, AVG(TotalSalesAmount*UnitsSold) as avg_sales_for_products 
+    from quarterlysales 
+    where (Quarter='Q2'AND Year='2024')AND ProductTypeID='1';
 
-5.ProducttypeID=2,
-total_sales_for_products=8750000
+7.select region,avg(ConsumptionKWh)as CK
+from sectorenergyconsumption 
+WHERE EnergySource IN ('Solar','Wind') and ConsumptionKWh>'CK' ;
 
-6.ProducttypeID=1,
-avg_sales_for_products=9240000.0000
-
-7.
-8.
+8.select Sector,AVG(ConsumptionKWh) from sectorenergyconsumption 
+group by sector
+having ((Month between 'February'and 'March')and Year='2024') ;
 9.
-10.PolicyID=301,303,305
-11.1900
+10.SELECT CustomerName,AVG(FeedbackScore)as FS,AVG(ClaimsCount) as CC
+FROM InsuranceActivities 
+WHERE FeedbackScore>'FS'OR ClaimsCount>'CC' AND Investigation='No'
+ORDER BY CustomerName;
+11.
 12.
+
+
+
