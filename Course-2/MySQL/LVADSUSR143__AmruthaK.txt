@@ -1,0 +1,67 @@
+1.select machine_id
+from l1_maintenance_records
+where month(maintenance_date)='3'and cost>
+(select avg(cost)from l1_maintenance_records 
+where month(maintenance_date)='3');
+
+2.select maintenance_type,count(*)
+from l1_maintenance_records
+where month(maintenance_date)='3'
+group by maintenance_type;
+
+3.select technician_name,maintenance_type,count(*),
+(select avg(cost)from l1_maintenance_records 
+where month(maintenance_date)='3')as avg_cost
+from l1_maintenance_records
+where month(maintenance_date)='3'
+group by technician_name,maintenance_type
+order by avg_cost;
+
+4.select product_id,avg(incident_count_pre_update)-avg(incident_count_post_update)as avg_reduction
+from l2_updates
+group by product_id;
+
+5.select update_id,count(*)
+from l2_updates
+group by update_id
+order by user_feedback_score asc;
+
+6.NA
+
+7.select p.patient_name,f.facility_name,v.reason_for_visit,t.outcome
+from l3_visits v
+join l3_treatments t on t.visit_id=v.visit_id
+join l3_patients p on p.patient_id=v.patient_id
+join l3_facilities f on f.facility_id=v.facility_id
+order by p.patient_name;
+
+8.select f.facility_id,f.facility_name,count(*)
+from l3_visits v
+join l3_facilities f on f.facility_id=v.facility_id
+where v.reason_for_visit='Emergency'
+group by f.facility_id,f.facility_name
+order by f.facility_id;
+
+9.select p.patient_name,p.insurance_provider
+from l3_visits v
+join l3_patients p on p.patient_id=v.patient_id
+join l3_treatments t on t.visit_id=v.visit_id
+where t.outcome='Complicated';
+
+10.select p.product_name,p.category,sum(s.quantity)as top_product
+from l4_sales s
+join l4_products p on p.product_id=s.product_id
+group by p.product_name,p.category
+order by top_product desc;
+
+11.create view sales_view as 
+select st.store_id,st.store_name,st.region,sum(s.quantity*p.price)as total_sales
+from l4_sales s
+join l4_stores st on s.store_id=st.store_id
+join l4_products p on p.product_id=s.product_id
+group by st.store_id,st.store_name,st.region;
+select region,total_sales
+from sales_view
+order by total_sales;
+
+12.NA
