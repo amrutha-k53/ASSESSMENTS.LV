@@ -1,0 +1,111 @@
+-- 1
+NA
+
+-- 2
+with SalesRevenue as 
+(select P.product_id,P.product_name,sum(SR.sales_amount)as total_sales_amount,
+year(sales_date)as cur_year,
+rank()over(partition by product_category order by sum(SR.sales_amount)) as 'rank'
+from Sales_Records SR
+JOIN Products P on P.product_id=SR.product_id
+where year(sales_date)=year(curdate())
+group by P.product_id,P.product_name,year(sales_date))
+select product_id,product_name,cur_year 
+from SalesRevenue
+order by product_id desc limit 3; 
+
+-- 3
+NA
+
+-- 4
+NA
+
+-- 5
+select f.flight_id,group_concat(departure_airport,' ',arrival_airport)as flight_route,avg(ticket_price)
+from Flights f
+join Tickets t on f.flight_id=t.ticket_id
+group by f.flight_id ;
+
+-- 6
+select flight_number,departure_date,count(ticket_id),
+from Passengers p
+join Tickets t on p.passenger_id=t.passenger_id
+order by passenger_id desc limit 5;
+
+-- 7
+select p.passenger_name,p.frequent_flyer_status,
+sum(t.ticket_price) as total_amount_spent
+from Passengers p
+join Tickets t on p.passenger_id=t.passenger_id
+group by p.passenger_name,p.frequent_flyer_status
+order by p.passenger_name desc limit 5;
+
+-- 8
+NA
+
+-- 9
+select min(registration_date-play_date) as playtime_day 
+from Players p
+join PlayerScores ps on p.player_id=ps.player_id;
+ 
+ -- 10
+ NA
+ 
+ -- 11
+ select avg(score),max(score),game_id,count(palyer_id)
+from PlayerScores;
+ 
+ --12
+ NA
+
+-- 13
+select doctor_id,sum(cost)as total_cost
+from treatments 
+group by doctor_id
+order by total_cost desc limit 5;
+
+-- 14
+select treatment_name,sum(cost),
+percent_rank()over(order by sum(cost))as percentage
+from treatments
+group by treatment_name;
+
+-- 15
+select patient_id,patient_name,admission_date,discharge_date
+from patients
+where admission_date>=date_sub(discharge_date,interval 30 day)
+order by admission_date asc;
+
+-- 16
+select gender,diagnosis,round(avg(discharge_date-admission_date)) as LOS
+from patients
+group by gender,diagnosis;
+
+-- 17
+select distinct c.department,e.semester,avg(e.grade)as grade
+from Courses c join Enrollments e on c.course_id=e.course_id
+group by c.department,e.semester
+order by c.department,e.semester;
+
+-- 18
+select s.major,s.enrollment_year,count(s.student_id)as total_number_of_students_enrolled
+from Students s
+join Enrollments e on s.student_id=e.student_id
+join Courses c on c.course_id=e.course_id
+group by s.major,s.enrollment_year
+order by count(s.student_id) desc limit 5;
+
+-- 19
+select distinct s.student_id,s.student_name,e.semester,
+sum(e.grade)as total_credits_per_semester
+from Students s
+join Enrollments e on s.student_id=e.student_id
+group by s.student_id,s.student_name,e.semester
+having sum(e.grade)>=50 ;
+
+-- 20
+select c.course_name,e.enrollment_year,
+count(e.student_id)as no_of_students
+from Students s
+join Enrollments e on s.student_id=e.student_id
+join Courses c on c.course_id=e.course_id;
